@@ -181,92 +181,47 @@
         <div class="content">
 
             <center><h2>Cari Data Pasien</h2></center>
-<!--            <div class="row">
+            <div class="row">
                 <div class="col-25">
                     <label for="nama">Nama</label>
                 </div>
                 <div class="col-75">
                     <input type="text" id="nama" name="nama" placeholder="Masukkan Nama Pasien">
                 </div>
-            </div>-->
+            </div>
             <br>
             <center><button id="btn" onclick="loadDoc()" type="button">Cari</button></center>
 
-            <p id="output"></p>
-            <div class="row">
-                <div class="col-25">
-                    <label for="nama">Nama Pasien</label>
-                </div>
-                <div class="col-75">
-                    <input type="text" id="nama" name="nama" value="">
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-25">
-                    <label for="noRm">No RM</label>
-                </div>
-                <div class="col-75">
-                    <input type="text" id="noRm" name="noRm" value="">
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-25">
-                    <label for="alamat">Alamat</label>
-                </div>
-                <div class="col-75">
-                    <input type="text" id="alamat" name="alamat" value="">
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-25">
-                    <label for="nik">NIK</label>
-                </div>
-                <div class="col-75">
-                    <input type="text" id="nik" name="nik" value="">
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-25">
-                    <label for="tanggalLahir">Tanggal Lahir</label>
-                </div>
-                <div class="col-75">
-                    <input type="text" id="tanggalLahir" name="tanggalLahir">
-                </div>
-            </div>
-            
-            <div class="row">
-                <div class="col-25">
-                    <label for="kelamin">Jenis Kelamin</label>
-                </div>
-                <div class="col-75">
-                    <input type="text" id="kelamin" name="kelamin">
-                </div>
-            </div>
-
+            <p id="id01"></p>
         </div>
 
         <script>
             function loadDoc() {
+                var xmlhttp = new XMLHttpRequest();
                 var url = "http://206.189.38.188:8080/myrs/webresources/pasien/cariNamaPasien?nama=" + nama.value;
-//                var url = "http://206.189.38.188:8080/myrs/webresources/pasien/cariPasien?nik=33101";
-                var xhttp = new XMLHttpRequest();
-                xhttp.open("GET", url, true);
-                xhttp.send();
-                xhttp.onreadystatechange = function () {
+                xmlhttp.onreadystatechange = function () {
                     if (this.readyState === 4 && this.status === 200) {
-                        var objj = JSON.parse(this.responseText);
-                        document.getElementById("noRm").value = objj.noRm;
-                        document.getElementById("nama").value = objj.nama;
-                        document.getElementById("alamat").value = objj.alamat;
-                        document.getElementById("nik").value = objj.nik;
-                        document.getElementById("tanggalLahir").value = objj.tanggalLahir;
-                        document.getElementById("kelamin").value = objj.kelamin;
+                        myFunction(this.responseText);
                     }
                 };
+                xmlhttp.open("GET", url, true);
+                xmlhttp.send();
+                function myFunction(response) {
+                    var arr = JSON.parse(response);
+                    var i;
+                    var out = "<center><table border='2'>";
+                    for (i = 0; i < arr.length; i++) {
+                        out += " <tr><td>" +
+                                arr[i].nik +
+                                " </td><td> " +
+                                arr[i].nama +
+                                " </td><td> " +
+                                arr[i].tanggalLahir +
+                                " </td></tr>";
+                    }
+                    out += "</table></center>";
+                    document.getElementById("id01").innerHTML = out;
+                }
             }
         </script>
 
